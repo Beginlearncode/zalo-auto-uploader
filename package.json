@@ -1,0 +1,16 @@
+{
+  "name": "zalo-auto-uploader",
+  "version": "1.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "googleapis": "^134.0.0",
+    "playwright": "^1.46.0",
+    "p-retry": "^6.2.0",
+    "date-fns": "^3.6.0",
+    "date-fns-tz": "^3.3.0"
+  }
+}
