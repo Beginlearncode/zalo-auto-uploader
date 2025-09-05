@@ -1,16 +1,30 @@
 {
   "name": "zalo-auto-uploader",
-  "version": "1.1.0",
-  "type": "module",
+  "version": "1.0.0",
+  "description": "Tool tự động tải file từ quetso.online, upload Google Drive và gửi lên nhóm Zalo",
+  "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "dotenv": "^16.4.5",
-    "googleapis": "^134.0.0",
+    "puppeteer": "^22.15.0",
     "playwright": "^1.46.0",
-    "p-retry": "^6.2.0",
+    "dotenv": "^16.4.5",
+    "googleapis": "^144.0.0",
+    "ws": "^8.18.0",
+    "express": "^4.19.2",
+    "node-schedule": "^2.1.1",
     "date-fns": "^3.6.0",
-    "date-fns-tz": "^3.3.0"
-  }
+    "date-fns-tz": "3.2.0",
+    "data-uri-to-buffer": "6.0.2"
+  },
+  "overrides": {
+    "date-fns-tz": "3.2.0",
+    "data-uri-to-buffer": "6.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "Beginlearncode",
+  "license": "MIT"
 }
