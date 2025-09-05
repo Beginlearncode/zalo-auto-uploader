@@ -20,13 +20,27 @@ RUN mkdir -p /opt/novnc && \
 # ===== 2) App =====
 WORKDIR /app
 
-# Cài deps (ổn định, không chạy postinstall)
+# Cấu hình NPM cho môi trường CI: giảm lỗi mạng/peer deps
+ENV npm_config_loglevel=warn \
+    npm_config_audit=false \
+    npm_config_fund=false \
+    npm_config_progress=false \
+    npm_config_fetch_retries=5 \
+    npm_config_fetch_retry_factor=2 \
+    npm_config_fetch_retry_maxtimeout=120000 \
+    npm_config_fetch_retry_mintimeout=20000
+
+# Copy metadata trước để tối ưu cache
 COPY package.json package-lock.json* ./
+
+# Cài deps (ưu tiên lockfile; bỏ postinstall; chấp nhận legacy peer deps; có fallback)
 RUN if [ -f package-lock.json ]; then \
-      npm ci --ignore-scripts; \
+      (npm ci --ignore-scripts --legacy-peer-deps || npm ci --ignore-scripts --force) ; \
     else \
-      npm install --ignore-scripts --omit=dev --no-audit --no-fund; \
-    fi
+      (npm install --ignore-scripts --omit=dev --no-audit --no-fund --legacy-peer-deps \
+       || npm install --ignore-scripts --force) ; \
+    fi \
+ && npm cache clean --force
 
 # Copy phần còn lại
 COPY . .
@@ -34,7 +48,7 @@ COPY . .
 # Cho phép script chạy
 RUN chmod +x start.sh
 
-# Base image đã có trình duyệt → bỏ qua tải lại
+# Base image đã có trình duyệt, không tải lại
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 ENV NODE_ENV=production
 ENV DISPLAY=:99
